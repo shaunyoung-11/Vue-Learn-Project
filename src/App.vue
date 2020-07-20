@@ -7,9 +7,20 @@
 
 <script>
 export default {
-  name: "App"
-};
+  name: 'App'
+}
 </script>
 
 <style>
+[class^='el-icon-fa'],
+[class*=' el-icon-fa'] {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome !important;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@import './assets/font-awesome-4.7.0/css/font-awesome.css';
+$fa-css-prefix: el-icon-fa;
 </style>

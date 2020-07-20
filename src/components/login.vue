@@ -6,19 +6,32 @@
         <img src="../assets/logo.png" alt />
       </div>
       <!-- 登录表单区域 -->
-      <el-form label-width="0px" class="login_form">
+      <el-form
+        ref="loginFormRef"
+        label-width="0px"
+        :model="loginForm"
+        :rules="loginFormRules"
+        class="login_form"
+      >
         <!-- 用户名 -->
-        <el-form-item>
-          <el-input></el-input>
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginForm.username"
+            prefix-icon="fa fa-user"
+          ></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
-          <el-input></el-input>
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            prefix-icon="fa fa-lock"
+            type="password"
+          ></el-input>
         </el-form-item>
         <!-- 按钮区域 -->
         <el-form-item class="btns">
-          <el-button type="primary">登录</el-button>
-          <el-button type="info">重置</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="info" @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -26,8 +39,50 @@
 </template>
 
 <script>
-import "../plugin/element";
-export default {};
+import '../plugin/element'
+export default {
+  data() {
+    return {
+      //登录表单的数据绑定
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      //表单验证规则
+      loginFormRules: {
+        //用户名
+        username: [
+          { required: true, message: '请输入登录名称', trigger: 'blur' }
+        ],
+        //密码
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '密码长度不合法', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    //点击重置按钮
+    resetLoginForm() {
+      this.$refs.loginFormRef.resetFields()
+    },
+    //点击登录按钮
+    login() {
+      this.$refs.loginFormRef.validate(valid => {
+        if (!valid) return
+        this.$http.post('login', this.loginForm).then(res => {
+          console.log(res.data)
+          if (res.data.meta.status != 200)
+            return this.$message.error('登录失败！')
+          this.$message.success('登录成功')
+          window.sessionStorage.setItem('token', res.data.data.token) //把token存储到sessionStorage
+          this.$router.push('/home')
+        })
+      })
+    }
+  }
+}
 </script>
 
 <style lang="css" scoped>
