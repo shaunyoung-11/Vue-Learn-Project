@@ -1,4 +1,5 @@
 <template>
+  <!-- 整个template中的内容会将html文件中的内容完全替换掉 -->
   <div id="app">
     <!-- 路由占位符 -->
     <router-view></router-view>
@@ -7,7 +8,7 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
 }
 </script>
 
